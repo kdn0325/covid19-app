@@ -1,0 +1,25 @@
+.App {
+  display: flex;
+  flex-direction: column;
+}
+.header{
+  background-color: #3b5998;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  align-items: center;
+}
+.header h1{
+  color: #fff;
+}
+
+.header select {
+  height: 30px;
+  width: 140px;
+  border-radius: 5px;
+  border: none;
+}
+
+section{
+  padding: 1rem;
+}
