@@ -49,14 +49,14 @@ const Contents = () => {
             setQuarantineData({
                 labels : labels,
                 datasets:[
-                {label:"월별 격리자 현황",borderColor:"salmon",fill: false,data: arr.map((a)=>a.active)},
+                {label:"월별 격리자 현황",borderColor:"salmon",fill: false, data: arr.map((a)=>a.active)},
                 ]
             });
-            const last = arr[arr.length -1];
+            const last = arr[arr.length-1];
             setComparedData({
                 labels : ["누적 확진자","격리 해제","사망"],
                 datasets:[
-                {label:"누적 확진 , 격리 해제 , 사망 비율", backgroundColor: ["#ff3d67","#059bff","#ffc233"], borderColor:["#ff3d67","#059bff","#ffc233"], fill: false, data: [last.confirmed,last.recovered,last.deaths],}
+                {label:"누적 확진,격리 해제,사망 비율", backgroundColor: ["#ff3d67","#059bff","#ffc233"], borderColor:["#ff3d67","#059bff","#ffc233"], fill:false, data:[last.confirmed,last.recovered,last.deaths],}
                 ]
             });
         }
