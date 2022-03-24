@@ -58,7 +58,7 @@ const Contents = () => {
             setComparedData({
                 labels : ["누적 확진자","격리 해제","사망"],
                 datasets:[
-                {label:"누적 확진,격리 해제,사망 비율", backgroundColor: ["#ff3d67","#059bff","#ffc233"], borderColor:["#ff3d67","#059bff","#ffc233"], fill:false, data:[last.confirmed,last.active,last.deaths],}
+                {label:"누적 확진,월별 격리,사망 비율", backgroundColor: ["#ff3d67","#059bff","#ffc233"], borderColor:["#ff3d67","#059bff","#ffc233"], fill:false, data:[last.confirmed,last.active,last.deaths],}
                 ]
             });
         }
