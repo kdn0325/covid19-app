@@ -1,8 +1,8 @@
 # 국내 코로나 현황--> [Link](https://kdn0325.github.io/covid19-app/)
 
-* npx create-react-app 사용
+* React-Hook
 * Chart.js를 학습하며 API를 사용하여 제작
-* Postman을 사용하여 API를 불러옴
+* Axios
 
 
 #### 리액트 입문
