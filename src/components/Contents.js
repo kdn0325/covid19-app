@@ -3,6 +3,7 @@ import {Bar,Doughnut,Line} from 'react-chartjs-2';
 import axios from 'axios';
 
 const Contents = () => {
+    /* 누적 확진자, 격리 해제 , 사망 */
     const[confirmedData, setConfirmedData] =useState({});
     const[quarantineData, setQuarantineData] =useState({});
     const[comparedData, setComparedData] =useState({});
