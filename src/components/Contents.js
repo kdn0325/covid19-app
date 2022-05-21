@@ -15,6 +15,7 @@ const Contents = () => {
             const res = await axios.get("https://api.covid19api.com/total/dayone/country/kr")
             makeData(res.data)
         }
+        /* 데이터 받을 변수 */
         const makeData = (items)=>{
             const arr = items.reduce((acc,cur)=>{
                 const currentDate = new Date(cur.Date);
