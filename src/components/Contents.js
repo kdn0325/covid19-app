@@ -31,6 +31,7 @@ const Contents = () => {
                 if(!findItem){
                     acc.push({year,month,date,confirmed,active,deaths,recovered})
                 }
+                /*  */
                 if(findItem && findItem.date <date){
                     findItem.year = year;
                     findItem.month = month;
