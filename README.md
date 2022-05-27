@@ -3,6 +3,7 @@
 * 국내 코로나 현황 API를 이용하여 제작한 리액트 컴포넌트입니다.
 * Chart.js를 학습하며 Open API를 활용하여 제작했습니다
 
+##
 
 <details>
 <summary><span style="color:red">&#9658;코드 리뷰 보기</span></summary>
@@ -12,6 +13,7 @@
 </div>
 </details>
 
+##
 
 ## 리액트 입문
 
