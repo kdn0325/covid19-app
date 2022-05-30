@@ -6,7 +6,7 @@
 ##
 
 <details>
-<summary><span style="color:red">&#9658;코드 리뷰 보기</span></summary>
+<summary><span style="color:red">&#128293; 클릭 하시면 느낀점 리뷰를 보실 수 있습니다. &#128591;</span></summary>
 <div markdown="1">       
   
 리액트 교육 과정을 수행하기 전 자바스크립트에서 사용했던 Ajax의 다양한 방식을 다시 한번 학습했고 Prop의 흐름 , JSX란 무엇인지 리액트의 장점이 무엇인지에 대해 새롭게 학습했습니다.
