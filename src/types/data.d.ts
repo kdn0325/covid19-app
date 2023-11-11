@@ -1,4 +1,4 @@
-interface ICoronaRegionData {
+interface ICovid19RegionData {
   countryNm: string; //* 데이터에 해당되는 시도명
   totalCnt: number; //* 코로나19 확진자 수(전체)
   deathCnt: number; //* 코로나19 사망자 수
@@ -8,8 +8,8 @@ interface ICoronaRegionData {
   incDecF: number; //* 전일대비(확진-해외)
 }
 
-interface ICoronaData {
-  [key: string]: ICoronaRegionData;
+interface ICovid19Data {
+  [key: string]: ICovid19RegionData;
 }
 
 interface DoughnutProps {

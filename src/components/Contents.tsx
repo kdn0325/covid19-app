@@ -18,23 +18,20 @@ const Contents = () => {
 
   // const [comparedData, setComparedData] = useState({});
 
-  //Covid 19 Api를 얻어옴
+  const Covid19URL = `https://api.corona-19.kr/korea/?serviceKey=${process.env.REACT_APP_API_KEY}`;
+  // const VaccineURL = `https://api.corona-19.kr/korea/vaccine/?serviceKey=${process.env.REACT_APP_API_KEY}`;
 
-  console.log(
-    `https://api.corona-19.kr/korea/?serviceKey=${process.env.REACT_APP_API_KEY}`
-  );
+  //Covid 19 Api를 얻어옴
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const res = await axios.get(
-        `https://api.corona-19.kr/korea/?serviceKey=${process.env.REACT_APP_API_KEY}`
-      );
-      const filteredData: ICoronaData = Object.keys(res.data)
+      const res = await axios.get(Covid19URL);
+      const filteredData: ICovid19Data = Object.keys(res.data)
         .filter((key) => key !== "API")
         .reduce((obj, key) => {
           obj[key] = res.data[key];
           return obj;
-        }, {} as ICoronaData);
+        }, {} as ICovid19Data);
 
       const regions = [
         "busan",
