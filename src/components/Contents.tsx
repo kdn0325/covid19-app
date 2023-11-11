@@ -16,7 +16,7 @@ const Contents = () => {
     datasets: [],
   });
 
-  const [comparedData, setComparedData] = useState({});
+  // const [comparedData, setComparedData] = useState({});
 
   //Covid 19 Api를 얻어옴
 
