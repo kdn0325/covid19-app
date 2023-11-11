@@ -2,33 +2,139 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import type { ChartData, ChartOptions } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+interface DoughnutProps {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+    borderColor: string[];
+    borderWidth: number;
+  }[];
+}
 
 const Contents = () => {
   /* 누적 확진자, 격리 해제 , 사망 */
-  const [data, setData] = useState([]);
-  const [confirmedData, setConfirmedData] = useState({});
+  const [data, setData] = useState<ICoronaData>({});
+  const [confirmedData, setConfirmedData] = useState<DoughnutProps>({
+    labels: [],
+    datasets: [],
+  });
+
   const [quarantineData, setQuarantineData] = useState({});
   const [comparedData, setComparedData] = useState({});
 
   //Covid 19 Api를 얻어옴
 
   console.log(
-    "url?",
     `https://api.corona-19.kr/korea/?serviceKey=${process.env.REACT_APP_API_KEY}`
   );
+
   useEffect(() => {
     const fetchEvents = async () => {
       const res = await axios.get(
         `https://api.corona-19.kr/korea/?serviceKey=${process.env.REACT_APP_API_KEY}`
       );
-      console.log("res?", res);
+      const filteredData: ICoronaData = Object.keys(res.data)
+        .filter((key) => key !== "API")
+        .reduce((obj, key) => {
+          obj[key] = res.data[key];
+          return obj;
+        }, {} as ICoronaData);
+      setData(filteredData);
 
-      setData(res.data);
+      console.log("filteredData?", filteredData);
     };
+    setConfirmedData({
+      labels: [
+        "부산",
+        "충북",
+        "충남",
+        "대구",
+        "대전",
+        "강원",
+        "대구",
+        "대전",
+        "광주",
+        "경북",
+        "경기",
+        "경남",
+        "인천",
+        "제주",
+        "전북",
+        "전남",
+        "세종",
+        "서울",
+        "울산",
+      ],
+
+      datasets: [
+        {
+          label: "# of Votes",
+          data: [
+            data.busan?.totalCnt,
+            data.chungbuk?.totalCnt,
+            data.chungnam?.totalCnt,
+            data.daegu?.totalCnt,
+            data.daejeon?.totalCnt,
+            data.gangwon?.totalCnt,
+            data.gwangju?.totalCnt,
+            data.gyeongbuk?.totalCnt,
+            data.gyeonggi?.totalCnt,
+            data.gyeongnam?.totalCnt,
+            data.incheon?.totalCnt,
+            data.jeju?.totalCnt,
+            data.jeonbuk?.totalCnt,
+            data.jeonnam?.totalCnt,
+            data.sejong?.totalCnt,
+            data.seoul?.totalCnt,
+            data.ulsan?.totalCnt,
+          ],
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    });
     fetchEvents();
   }, []);
+
+  console.log("confirmedData?", confirmedData);
 
   // console.log("data?", data.busan.totalCnt);
   // console.log("data?", data.chungbuk.totalCnt);
@@ -48,111 +154,23 @@ const Contents = () => {
   // console.log("data?", data.seoul.totalCnt);
   // console.log("data?", data.ulsan.totalCnt);
 
-  //   const {busan.totalCnt,
-  //     chungbuk.totalCnt,
-  //     chungnam.totalCnt,
-  //     daegu.totalCnt,
-  //     daejeon.totalCnt,
-  //     gangwon.totalCnt,
-  //     gwangju.totalCnt,
-  //     gyeongbuk.totalCnt,
-  //     gyeonggi.totalCnt,
-  //     gyeongnam.totalCnt,
-  //     incheon.totalCnt,
-  //     jeju.totalCnt,
-  //     jeonbuk.totalCnt,
-  //     jeonnam.totalCnt,
-  //     sejong.totalCnt,
-  //     seoul.totalCnt,
-  //     ulsan.totalCnt} = data
-
-  const Doughnutdata = {
-    labels: [
-      "부산",
-      "충북",
-      "충남",
-      "대구",
-      "대전",
-      "강원",
-      "대구",
-      "대전",
-      "광주",
-      "경북",
-      "경기",
-      "경남",
-      "인천",
-      "제주",
-      "전북",
-      "전남",
-      "세종",
-      "서울",
-      "울산",
-    ],
-
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [
-          // data.busan.totalCnt,
-          // data.chungbuk.totalCnt,
-          // data.chungnam.totalCnt,
-          // data.daegu.totalCnt,
-          // data.daejeon.totalCnt,
-          // data.gangwon.totalCnt,
-          // data.gwangju.totalCnt,
-          // data.gyeongbuk.totalCnt,
-          // data.gyeonggi.totalCnt,
-          // data.gyeongnam.totalCnt,
-          // data.incheon.totalCnt,
-          // data.jeju.totalCnt,
-          // data.jeonbuk.totalCnt,
-          // data.jeonnam.totalCnt,
-          // data.sejong.totalCnt,
-          // data.seoul.totalCnt,
-          // data.ulsan.totalCnt,
-        ],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-  const config = {
-    type: "doughnut",
-    data: Doughnutdata,
-  };
+  // const {busan.totalCnt,
+  //   chungbuk.totalCnt,
+  //   chungnam.totalCnt,
+  //   daegu.totalCnt,
+  //   daejeon.totalCnt,
+  //   gangwon.totalCnt,
+  //   gwangju.totalCnt,
+  //   gyeongbuk.totalCnt,
+  //   gyeonggi.totalCnt,
+  //   gyeongnam.totalCnt,
+  //   incheon.totalCnt,
+  //   jeju.totalCnt,
+  //   jeonbuk.totalCnt,
+  //   jeonnam.totalCnt,
+  //   sejong.totalCnt,
+  //   seoul.totalCnt,
+  //   ulsan.totalCnt} = data
 
   /* 데이터 받을 변수 */
   //     const makeData = (items) => {
@@ -224,7 +242,10 @@ const Contents = () => {
   return (
     <section>
       <h2>국내 코로나 현황</h2>
-      {/* <Doughnut data={Doughnutdata} /> */}
+      <Doughnut
+        data={confirmedData}
+        style={{ position: "relative", height: "200px" }}
+      />
       {/* <div className="contents">
         <div>
           <Bar
