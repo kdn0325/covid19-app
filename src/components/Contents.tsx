@@ -2,29 +2,20 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import type { ChartData, ChartOptions } from "chart.js";
+import { generateRandomColors } from "../util/randomColors";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-interface DoughnutProps {
-  labels: string[];
-  datasets: {
-    label: string;
-    data: number[];
-    backgroundColor: string[];
-    borderColor: string[];
-    borderWidth: number;
-  }[];
-}
 
 const Contents = () => {
-  /* 누적 확진자, 격리 해제 , 사망 */
-  const [data, setData] = useState<ICoronaData>({});
   const [confirmedData, setConfirmedData] = useState<DoughnutProps>({
     labels: [],
     datasets: [],
   });
+  const [deathCntData, setDeathCntData] = useState<DoughnutProps>({
+    labels: [],
+    datasets: [],
+  });
 
-  const [quarantineData, setQuarantineData] = useState({});
   const [comparedData, setComparedData] = useState({});
 
   //Covid 19 Api를 얻어옴
@@ -44,93 +35,68 @@ const Contents = () => {
           obj[key] = res.data[key];
           return obj;
         }, {} as ICoronaData);
-      setData(filteredData);
 
-      console.log("filteredData?", filteredData);
+      const regions = [
+        "busan",
+        "chungbuk",
+        "chungnam",
+        "daegu",
+        "daejeon",
+        "gangwon",
+        "gwangju",
+        "gyeongbuk",
+        "gyeonggi",
+        "gyeongnam",
+        "incheon",
+        "jeju",
+        "jeonbuk",
+        "jeonnam",
+        "sejong",
+        "seoul",
+        "ulsan",
+      ];
+      const regionName = regions.map(
+        (region) => filteredData[region]?.countryNm
+      );
+
+      const regionData = regions.map(
+        (region) => filteredData[region]?.totalCnt || 0
+      );
+      const deathData = regions.map(
+        (region) => filteredData[region]?.deathCnt || 0
+      );
+      const dataLength = regions.length;
+
+      const backgroundColors = generateRandomColors(dataLength);
+
+      setConfirmedData({
+        labels: regionName,
+
+        datasets: [
+          {
+            label: "지역별 국내 누적 확진자",
+            data: regionData,
+            backgroundColor: backgroundColors,
+            // borderColor: "salmon",
+            borderWidth: 1,
+          },
+        ],
+      });
+      setDeathCntData({
+        labels: regionName,
+
+        datasets: [
+          {
+            label: "지역별 국내 누적 사망자",
+            data: deathData,
+            backgroundColor: backgroundColors,
+            // borderColor: "salmon",
+            borderWidth: 1,
+          },
+        ],
+      });
     };
-    setConfirmedData({
-      labels: [
-        "부산",
-        "충북",
-        "충남",
-        "대구",
-        "대전",
-        "강원",
-        "대구",
-        "대전",
-        "광주",
-        "경북",
-        "경기",
-        "경남",
-        "인천",
-        "제주",
-        "전북",
-        "전남",
-        "세종",
-        "서울",
-        "울산",
-      ],
 
-      datasets: [
-        {
-          label: "# of Votes",
-          data: [
-            data.busan?.totalCnt,
-            data.chungbuk?.totalCnt,
-            data.chungnam?.totalCnt,
-            data.daegu?.totalCnt,
-            data.daejeon?.totalCnt,
-            data.gangwon?.totalCnt,
-            data.gwangju?.totalCnt,
-            data.gyeongbuk?.totalCnt,
-            data.gyeonggi?.totalCnt,
-            data.gyeongnam?.totalCnt,
-            data.incheon?.totalCnt,
-            data.jeju?.totalCnt,
-            data.jeonbuk?.totalCnt,
-            data.jeonnam?.totalCnt,
-            data.sejong?.totalCnt,
-            data.seoul?.totalCnt,
-            data.ulsan?.totalCnt,
-          ],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
-          ],
-          borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-            "rgba(255, 159, 64, 1)",
-          ],
-          borderWidth: 1,
-        },
-      ],
-    });
     fetchEvents();
   }, []);
 
@@ -240,12 +206,18 @@ const Contents = () => {
   //     fetchEvents();
   //   }, []);
   return (
-    <section>
+    <section className="p-2">
       <h2>국내 코로나 현황</h2>
-      <Doughnut
-        data={confirmedData}
-        style={{ position: "relative", height: "200px" }}
-      />
+      <div className="flex justify-between ">
+        <div className="w-2/4">
+          <h2 className=" text-center font-bold">확진자 현황</h2>
+          <Doughnut data={confirmedData} />
+        </div>
+        <div className="w-2/4">
+          <h2 className=" text-center font-bold">누적 사망자 현황</h2>
+          <Doughnut data={deathCntData} />
+        </div>
+      </div>
       {/* <div className="contents">
         <div>
           <Bar
