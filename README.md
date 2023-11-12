@@ -23,3 +23,5 @@
 - [데이터 동기화 시간 확인](https://github.com/dhlife09/Corona-19-API/blob/master/docs/updateTime.md)
 - API명에 bold 처리되어 있는 API 사용을 권장합니다. (최신 버전)
 - **국내 전체(recommended)**
+
+<img width="1157" alt="covid19" src="https://github.com/kdn0325/covid19-app/assets/91298955/1969545a-4722-410e-bc7e-f4c70041363e">
